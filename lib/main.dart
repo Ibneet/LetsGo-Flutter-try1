@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/widgets/journey_list.dart';
+import 'package:flutter/services.dart';
 
 import './widgets/new_journey.dart';
 import './widgets/journey_list.dart';
 import './models/journey.dart';
 
 void main(){
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown
+  ]);
   runApp(MyApp());
 }
 
@@ -15,7 +20,19 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'letsGo',
       theme: ThemeData(
-        primarySwatch: Colors.teal
+        primarySwatch: Colors.teal,
+        fontFamily: 'GentiumBookBasic',
+        textTheme: ThemeData.light().textTheme.copyWith(
+          button: TextStyle(color: Colors.white),
+        ),
+        appBarTheme: AppBarTheme(
+          textTheme: ThemeData.light().textTheme.copyWith(
+            headline6: TextStyle(
+              fontFamily: 'Lobster',
+              fontSize: 28
+            )
+          ),
+        )
       ),
       home: MyHomePage()
     );
@@ -30,23 +47,24 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Journey> _userJourneys = [
-    Journey(
-      from: 'Patiala', 
-      to: 'Jalandhar', 
-      date: DateTime.parse('2020-06-06')
-    ),
-    Journey(
-      from: 'Chandigarh', 
-      to: 'Manali', 
-      date: DateTime.parse('2020-05-08')
-    ),
+    // Journey(
+    //   from: 'Patiala', 
+    //   to: 'Jalandhar', 
+    //   date: DateTime.parse('2020-06-06')
+    // ),
+    // Journey(
+    //   from: 'Chandigarh', 
+    //   to: 'Manali', 
+    //   date: DateTime.parse('2020-05-08')
+    // ),
   ];
 
-  void _addNewJourney(String jFrom, String jTo){
+  void _addNewJourney(String jFrom, String jTo, DateTime jDate){
     final newj = Journey(
+      id: DateTime.now().toString(),
       from: jFrom,
       to: jTo,
-      date: DateTime.parse('2020-06-08')
+      date: jDate
     );
 
     setState(() {
@@ -66,11 +84,19 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _deleteJourney(String id){
+    setState(() {
+      _userJourneys.removeWhere((j) => j.id == id);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('letsGO'),
+        title: Text(
+          'letsGO',
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
@@ -78,16 +104,18 @@ class _MyHomePageState extends State<MyHomePage> {
           )
         ],
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.symmetric(horizontal:30),
-          padding: EdgeInsets.only(top: 70),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              JourneyList(_userJourneys),
-            ]),
-        ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal:30),
+            padding: EdgeInsets.only(top: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                JourneyList(_userJourneys, _deleteJourney),
+              ]),
+          ),
+        )
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
