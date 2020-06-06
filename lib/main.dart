@@ -5,7 +5,7 @@ import './widgets/new_journey.dart';
 import './widgets/journey_list.dart';
 import './models/journey.dart';
 
-void main(){
+void main(){ 
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
