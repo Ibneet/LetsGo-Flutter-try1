@@ -46,18 +46,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Journey> _userJourneys = [
-    // Journey(
-    //   from: 'Patiala', 
-    //   to: 'Jalandhar', 
-    //   date: DateTime.parse('2020-06-06')
-    // ),
-    // Journey(
-    //   from: 'Chandigarh', 
-    //   to: 'Manali', 
-    //   date: DateTime.parse('2020-05-08')
-    // ),
-  ];
+  final List<Journey> _userJourneys = [];
 
   void _addNewJourney(String jFrom, String jTo, DateTime jDate){
     final newj = Journey(
@@ -107,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            margin: EdgeInsets.symmetric(horizontal:30),
+            margin: EdgeInsets.symmetric(horizontal:5),
             padding: EdgeInsets.only(top: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,

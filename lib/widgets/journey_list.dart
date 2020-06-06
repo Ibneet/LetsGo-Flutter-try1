@@ -14,55 +14,64 @@ class JourneyList extends StatelessWidget {
     return Container(
       height: MediaQuery.of(context).size.height*0.8,
       child: journeys.isEmpty 
-      ? Column(
-          children: <Widget>[
-            Text(
-              'No current journey yet!',
-              style: TextStyle(
-                fontFamily: 'GentiumBookBasic',
-                fontSize: 30,
+      ? SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Text(
+                'No current journey yet!',
+                style: TextStyle(
+                  fontFamily: 'GentiumBookBasic',
+                  fontSize: 30,
+                ),
               ),
-            ),
-            SizedBox(
-              height: 50,
-            ),
-            Container(
-              height: 400,
-              child: Image.asset(
-                'assets/images/waiting.png', 
-                fit: BoxFit.cover,
-                color: Colors.teal[300],
+              SizedBox(
+                height: MediaQuery.of(context).size.height/16,
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height/1.5,
+                child: Image.asset(
+                  'assets/images/waiting.png', 
+                  fit: BoxFit.cover,
+                  color: Colors.teal[300],
+                )
               )
-            )
-          ],
+            ],
+          ),
         )
-          : ListView.builder(
-              itemBuilder: (context, index) {
-                return Card(
-                  elevation: 10,
-                  margin: EdgeInsets.symmetric(
-                    vertical: 20, 
-                    horizontal: 1
-                  ),
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      radius: 40,
+      : LayoutBuilder(builder: (ctx, constraints){
+          return ListView.builder(
+            itemBuilder: (context, index) {
+              return Card(
+                elevation: 20,
+                margin: EdgeInsets.symmetric(
+                  vertical: 20,
+                ),
+                child: ListTile(
+                  leading: Container(
+                    width: constraints.maxWidth*0.15,
+                    child: CircleAvatar(
+                      radius: 25,
                       child: Icon(
                         Icons.location_on, 
-                        size: 30, 
+                        size: 25, 
                         color: Theme.of(context).textTheme.button.color,
                       ),
                     ),
-                    title: Text(
+                  ),
+                  title: Container(
+                    width: constraints.maxWidth*0.75,
+                    child: Text(
                       '${journeys[index].from} - ${journeys[index].to}', 
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold
                       ),
                     ),
-                      
+                  ),
                     
-                    subtitle: Row(
+                  subtitle: Container(
+                    width: constraints.maxWidth*0.75,
+                    child: Row(
                       children: <Widget>[
                         Icon(
                           Icons.date_range,
@@ -74,15 +83,22 @@ class JourneyList extends StatelessWidget {
                         ),
                       ],
                     ),
-                    trailing: IconButton(
+                  ),
+                  trailing: Container(
+                    width: constraints.maxWidth*0.10,
+                    child: IconButton(
                       icon: Icon(Icons.delete), 
                       onPressed: () => deleteJny(journeys[index].id) 
                     ),
                   ),
-                );
-              },
-        itemCount: journeys.length,
-      ),
+                ),
+              );
+            },
+            itemCount: journeys.length
+          );
+          }
+        ),
+        
     );
   }
 }
